@@ -1,0 +1,26 @@
+{
+  "name": "gulp-base64-inline",
+  "version": "1.0.0",
+  "description": "Inline images you want with base64.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:goschevski/gulp-base64-inline.git"
+  },
+  "keywords": [
+    "gulpplugin",
+    "gulp",
+    "base64",
+    "inline"
+  ],
+  "author": "Aleksandar Gosevski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/goschevski/gulp-base64-inline/issues"
+  },
+  "homepage": "https://github.com/goschevski/gulp-base64-inline",
+  "dependencies": {
+    "gulp-util": "^3.0.3",
+    "through2": "^0.6.3"
+  }
+}
