@@ -2,6 +2,7 @@ var through = require('through2');
 var gutil = require('gulp-util');
 var path = require('path');
 var fs = require('fs');
+var mime = require('mime');
 
 module.exports = function (givenImagesPath) {
     function base64Inline (file, enc, callback) {
@@ -28,16 +29,9 @@ module.exports = function (givenImagesPath) {
             return callback();
         }
 
-        var getExtension = function (filename) {
-            var files = filename.split('.');
-            if (files.length === 1) {
-                return '';
-            }
-            return files[files.length - 1];
-        };
-
         function inline (image, imagePath) {
-            var prefix = 'url(data:image/' + getExtension(imagePath) + ';base64,';
+            var fileMime = mime.lookup(imagePath);
+            var prefix = 'url(' + fileMime  + ';base64,';
             var fileData = fs.readFileSync(path.join(imagesPath, imagePath));
             return prefix + new Buffer(fileData).toString('base64') + ')';
         }
