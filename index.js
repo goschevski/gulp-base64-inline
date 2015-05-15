@@ -31,7 +31,7 @@ module.exports = function (givenImagesPath) {
 
         function inline (image, imagePath) {
             var fileMime = mime.lookup(imagePath);
-            var prefix = 'url(' + fileMime  + ';base64,';
+            var prefix = 'url(data:' + fileMime  + ';base64,';
             var fileData = fs.readFileSync(path.join(imagesPath, imagePath));
             return prefix + new Buffer(fileData).toString('base64') + ')';
         }
