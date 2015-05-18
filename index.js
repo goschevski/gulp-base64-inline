@@ -29,11 +29,17 @@ module.exports = function (givenImagesPath) {
             return callback();
         }
 
-        function inline (image, imagePath) {
+        function inline (inlineExpr, imagePath) {
+            try {
+                var fileData = fs.readFileSync(path.join(imagesPath, imagePath));
+            }
+            catch (e) {
+                return inlineExpr;
+            }
+
+            var fileBase64 = new Buffer(fileData).toString('base64');
             var fileMime = mime.lookup(imagePath);
-            var prefix = 'url(data:' + fileMime  + ';base64,';
-            var fileData = fs.readFileSync(path.join(imagesPath, imagePath));
-            return prefix + new Buffer(fileData).toString('base64') + ')';
+            return 'url(data:' + fileMime  + ';base64,' + fileBase64 + ')';
         }
 
         // check if file.contents is a `Buffer`
