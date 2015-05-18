@@ -44,7 +44,7 @@ module.exports = function (givenImagesPath) {
 
         // check if file.contents is a `Buffer`
         if (file.isBuffer()) {
-            var base64 = String(file.contents).replace(/inline\('(.+)'\)/g, inline);
+            var base64 = String(file.contents).replace(/inline\(['"]?([^\)]+)["']?\)/g, inline);
             file.contents = new Buffer(base64);
 
             this.push(file);
