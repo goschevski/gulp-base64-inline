@@ -29,7 +29,8 @@ module.exports = function (givenImagesPath) {
             return callback();
         }
 
-        function inline (inlineExpr, imagePath) {
+        function inline (inlineExpr, quotedPath) {
+            var imagePath = quotedPath.replace(/['"]/g, '');
             try {
                 var fileData = fs.readFileSync(path.join(imagesPath, imagePath));
             }
@@ -44,7 +45,7 @@ module.exports = function (givenImagesPath) {
 
         // check if file.contents is a `Buffer`
         if (file.isBuffer()) {
-            var base64 = String(file.contents).replace(/inline\(['"]?([^\)]+)["']?\)/g, inline);
+            var base64 = String(file.contents).replace(/inline\(([^\)]+)\)/g, inline);
             file.contents = new Buffer(base64);
 
             this.push(file);
