@@ -29,16 +29,25 @@ module.exports = function (givenImagesPath) {
             return callback();
         }
 
-        function inline (image, imagePath) {
+        function inline (inlineExpr, quotedPath) {
+            var imagePath = quotedPath.replace(/['"]/g, '');
+            try {
+                var fileData = fs.readFileSync(path.join(imagesPath, imagePath));
+            }
+            catch (e) {
+                gutil.log(gutil.colors.yellow('base64-inline'), 'Referenced file not found: ' + path.join(imagesPath, imagePath));
+                gutil.log(gutil.colors.yellow('base64-inline'), 'Leaving it as is.');
+                return inlineExpr;
+            }
+
+            var fileBase64 = new Buffer(fileData).toString('base64');
             var fileMime = mime.lookup(imagePath);
-            var prefix = 'url(data:' + fileMime  + ';base64,';
-            var fileData = fs.readFileSync(path.join(imagesPath, imagePath));
-            return prefix + new Buffer(fileData).toString('base64') + ')';
+            return 'url(data:' + fileMime  + ';base64,' + fileBase64 + ')';
         }
 
         // check if file.contents is a `Buffer`
         if (file.isBuffer()) {
-            var base64 = String(file.contents).replace(/inline\('(.+)'\)/g, inline);
+            var base64 = String(file.contents).replace(/inline\(([^\)]+)\)/g, inline);
             file.contents = new Buffer(base64);
 
             this.push(file);
