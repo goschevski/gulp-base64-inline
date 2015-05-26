@@ -1,6 +1,6 @@
 {
   "name": "gulp-base64-inline",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Inline images you want with base64.",
   "main": "index.js",
   "repository": {
