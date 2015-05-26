@@ -35,8 +35,8 @@ module.exports = function (givenImagesPath) {
                 var fileData = fs.readFileSync(path.join(imagesPath, imagePath));
             }
             catch (e) {
-                gutil.log('base64-inline', gutil.colors.red('Referenced file not found: ' + path.join(imagesPath, imagePath)));
-                gutil.log('base64-inline', gutil.colors.red('Leaving it as is.'));
+                gutil.log(gutil.colors.yellow('base64-inline'), 'Referenced file not found: ' + path.join(imagesPath, imagePath));
+                gutil.log(gutil.colors.yellow('base64-inline'), 'Leaving it as is.');
                 return inlineExpr;
             }
 
