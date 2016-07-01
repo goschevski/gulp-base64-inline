@@ -10,6 +10,8 @@ gulp.task('css', function () {
     return gulp.src('css/style.css')
         .pipe(base64('../assets/img'))
         .pipe(gulp.dest('assets/css/'));
+    }
+);
 ```
 
 Source:
