@@ -1,7 +1,9 @@
 var through = require('through2');
-var gutil = require('gulp-util');
 var path = require('path');
 var fs = require('fs');
+var PluginError = require('plugin-error');
+var log = require('fancy-log');
+var AnsiColors = require('ansi-colors');
 var mime = require('mime');
 
 module.exports = function (givenImagesPath) {
@@ -25,7 +27,7 @@ module.exports = function (givenImagesPath) {
 
         if (file.isStream()) {
             // accepting streams is optional
-            this.emit('error', new gutil.PluginError('gulp-inline-base64', 'Stream content is not supported'));
+            this.emit('error', new PluginError('gulp-inline-base64', 'Stream content is not supported'));
             return callback();
         }
 
@@ -35,8 +37,8 @@ module.exports = function (givenImagesPath) {
                 var fileData = fs.readFileSync(path.join(imagesPath, imagePath));
             }
             catch (e) {
-                gutil.log(gutil.colors.yellow('base64-inline'), 'Referenced file not found: ' + path.join(imagesPath, imagePath));
-                gutil.log(gutil.colors.yellow('base64-inline'), 'Leaving it as is.');
+                log(AnsiColors.yellow('base64-inline'), 'Referenced file not found: ' + path.join(imagesPath, imagePath));
+                log(AnsiColors.yellow('base64-inline'), 'Leaving it as is.');
                 return inlineExpr;
             }
 
