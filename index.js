@@ -8,8 +8,10 @@ var mime = require('mime');
 
 module.exports = function (givenImagesPath, options) {
     function base64Inline (file, opts, callback) {
+        console.log("fork version");
         var imagesPath;
         var opts = options;
+        
         if (!givenImagesPath) {
             imagesPath = path.dirname(file.path);
         } else {
@@ -45,10 +47,17 @@ module.exports = function (givenImagesPath, options) {
             var fileBase64 = Buffer.from(fileData).toString('base64');
 
             
-            
-            var prefix = opts.prefix || "url(";
-            var suffix = opts.suffix || ")";
-            var includeMime = opts.includeMime || true;            
+            console.log(opts);
+            var prefix = "url(";
+            var suffix = ")";
+            var includeMime = true; 
+
+            if (opts.prefix !== undefined)
+                prefix = opts.prefix;
+            if (opts.suffix !== undefined)
+                prefix = opts.suffix;
+            if (opts.includeMime !== undefined)
+                includeMime = opts.includeMime;                
             if (includeMime){
                 var fileMime = mime.lookup(imagePath);
                 prefix+= 'data:' + fileMime  + ';base64,';
