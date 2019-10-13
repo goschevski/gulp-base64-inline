@@ -8,7 +8,6 @@ var mime = require('mime');
 
 module.exports = function (givenImagesPath, options) {
     function base64Inline (file, opts, callback) {
-        console.log("fork version");
         var imagesPath;
         var opts = options;
         
@@ -45,9 +44,7 @@ module.exports = function (givenImagesPath, options) {
             }
 
             var fileBase64 = Buffer.from(fileData).toString('base64');
-
             
-            console.log(opts);
             var prefix = "url(";
             var suffix = ")";
             var includeMime = true; 
