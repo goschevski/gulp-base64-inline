@@ -6,10 +6,10 @@ var log = require('fancy-log');
 var AnsiColors = require('ansi-colors');
 var mime = require('mime');
 
-module.exports = function (givenImagesPath) {
+module.exports = function (givenImagesPath, options) {
     function base64Inline (file, opts, callback) {
         var imagesPath;
-
+        var opts = options;
         if (!givenImagesPath) {
             imagesPath = path.dirname(file.path);
         } else {
@@ -42,7 +42,7 @@ module.exports = function (givenImagesPath) {
                 return inlineExpr;
             }
 
-            var fileBase64 = new Buffer(fileData).toString('base64');
+            var fileBase64 = Buffer.from(fileData).toString('base64');
 
             
             
@@ -59,7 +59,7 @@ module.exports = function (givenImagesPath) {
         // check if file.contents is a `Buffer`
         if (file.isBuffer()) {
             var base64 = String(file.contents).replace(/inline\(([^\)]+)\)/g, inline);
-            file.contents = new Buffer(base64);
+            file.contents = Buffer.from(base64);
 
             this.push(file);
         }
