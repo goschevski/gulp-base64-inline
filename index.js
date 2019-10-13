@@ -7,7 +7,7 @@ var AnsiColors = require('ansi-colors');
 var mime = require('mime');
 
 module.exports = function (givenImagesPath) {
-    function base64Inline (file, enc, callback) {
+    function base64Inline (file, opts, callback) {
         var imagesPath;
 
         if (!givenImagesPath) {
@@ -18,7 +18,7 @@ module.exports = function (givenImagesPath) {
                 imagesPath = givenImagesPath;
             }
         }
-
+        
         // Do nothing if no contents
         if (file.isNull()) {
             this.push(file);
@@ -43,8 +43,17 @@ module.exports = function (givenImagesPath) {
             }
 
             var fileBase64 = new Buffer(fileData).toString('base64');
-            var fileMime = mime.lookup(imagePath);
-            return 'url(data:' + fileMime  + ';base64,' + fileBase64 + ')';
+
+            
+            
+            var prefix = opts.prefix || "url(";
+            var suffix = opts.suffix || ")";
+            var includeMime = opts.includeMime || true;            
+            if (includeMime){
+                var fileMime = mime.lookup(imagePath);
+                prefix+= 'data:' + fileMime  + ';base64,';
+            }
+            return prefix + fileBase64 + suffix;
         }
 
         // check if file.contents is a `Buffer`
