@@ -6,10 +6,11 @@ var log = require('fancy-log');
 var AnsiColors = require('ansi-colors');
 var mime = require('mime');
 
-module.exports = function (givenImagesPath) {
-    function base64Inline (file, enc, callback) {
+module.exports = function (givenImagesPath, options) {
+    function base64Inline (file, opts, callback) {
         var imagesPath;
-
+        var opts = options;
+        
         if (!givenImagesPath) {
             imagesPath = path.dirname(file.path);
         } else {
@@ -18,7 +19,7 @@ module.exports = function (givenImagesPath) {
                 imagesPath = givenImagesPath;
             }
         }
-
+        
         // Do nothing if no contents
         if (file.isNull()) {
             this.push(file);
@@ -42,15 +43,29 @@ module.exports = function (givenImagesPath) {
                 return inlineExpr;
             }
 
-            var fileBase64 = new Buffer(fileData).toString('base64');
-            var fileMime = mime.lookup(imagePath);
-            return 'url(data:' + fileMime  + ';base64,' + fileBase64 + ')';
+            var fileBase64 = Buffer.from(fileData).toString('base64');
+            
+            var prefix = "url(";
+            var suffix = ")";
+            var includeMime = true; 
+
+            if (opts.prefix !== undefined)
+                prefix = opts.prefix;
+            if (opts.suffix !== undefined)
+                suffix = opts.suffix;
+            if (opts.includeMime !== undefined)
+                includeMime = opts.includeMime;                
+            if (includeMime){
+                var fileMime = mime.lookup(imagePath);
+                prefix+= 'data:' + fileMime  + ';base64,';
+            }
+            return prefix + fileBase64 + suffix;
         }
 
         // check if file.contents is a `Buffer`
         if (file.isBuffer()) {
             var base64 = String(file.contents).replace(/inline\(([^\)]+)\)/g, inline);
-            file.contents = new Buffer(base64);
+            file.contents = Buffer.from(base64);
 
             this.push(file);
         }
