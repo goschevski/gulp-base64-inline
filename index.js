@@ -52,7 +52,7 @@ module.exports = function (givenImagesPath, options) {
             if (opts.prefix !== undefined)
                 prefix = opts.prefix;
             if (opts.suffix !== undefined)
-                prefix = opts.suffix;
+                suffix = opts.suffix;
             if (opts.includeMime !== undefined)
                 includeMime = opts.includeMime;                
             if (includeMime){
