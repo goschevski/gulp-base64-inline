@@ -49,15 +49,21 @@ module.exports = function (givenImagesPath, options) {
             var suffix = ")";
             var includeMime = true; 
 
-            if (opts.prefix !== undefined)
-                prefix = opts.prefix;
-            if (opts.suffix !== undefined)
-                suffix = opts.suffix;
-            if (opts.includeMime !== undefined)
-                includeMime = opts.includeMime;                
+            // has options
+            if (opts){
+                if (opts.prefix !== undefined)
+                    prefix = opts.prefix;
+                if (opts.suffix !== undefined)
+                    suffix = opts.suffix;
+                if (opts.includeMime !== undefined)
+                    includeMime = opts.includeMime;   
+            }
+
+            //add Mime
             if (includeMime){
                 var fileMime = mime.lookup(imagePath);
                 prefix+= 'data:' + fileMime  + ';base64,';
+                
             }
             return prefix + fileBase64 + suffix;
         }
